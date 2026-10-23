@@ -1,0 +1,107 @@
+{
+  "Id": "tbt.memory.cleaner",
+  "Name": "内存清理",
+  "Author": "咕咕咕---TB大王",
+  "Version": "1.4.1",
+  "ApiVersion": 1,
+  "EntryAssembly": "TbtMemoryCleaner.dll",
+  "EntryType": "TbtMemoryCleaner.MemoryCleanerPlugin",
+  "Permissions": ["ui.custom", "ui.toast", "settings.read"],
+  "Pages": [
+    {
+      "Id": "tbt.memory.cleaner.page",
+      "Title": { "Chinese": "内存清理", "English": "Memory cleaner" },
+      "Order": 70,
+      "View": { "Assembly": "TbtMemoryCleaner.Ui.dll", "Type": "TbtMemoryCleaner.Ui.MemoryCleanerPage" }
+    }
+  ],
+  "Settings": [
+    {
+      "Id": "areas",
+      "PageId": "tbt.memory.cleaner.page",
+      "Kind": "number",
+      "Title": { "Chinese": "清理区域", "English": "Cleanup areas" },
+      "Description": { "Chinese": "位掩码：1 工作集，2 系统文件缓存，4 卷写缓存，8 低优先级待机，16 待机全清，32 已修改页，64 注册表缓存。", "English": "Bit mask: 1 working sets, 2 system file cache, 4 volume write cache, 8 low-priority standby, 16 full standby, 32 modified pages, 64 registry cache." },
+      "DefaultValue": 15,
+      "Minimum": 0,
+      "Maximum": 127
+    },
+    {
+      "Id": "auto-enabled",
+      "PageId": "tbt.memory.cleaner.page",
+      "Kind": "boolean",
+      "Title": { "Chinese": "自动清理", "English": "Automatic cleaning" },
+      "Description": { "Chinese": "内存占用超过阈值时在后台清理安全区域。", "English": "Cleans safe areas in the background when memory usage exceeds the threshold." },
+      "DefaultValue": false
+    },
+    {
+      "Id": "auto-threshold",
+      "PageId": "tbt.memory.cleaner.page",
+      "Kind": "number",
+      "Title": { "Chinese": "触发阈值（%）", "English": "Threshold (%)" },
+      "DefaultValue": 85,
+      "Minimum": 50,
+      "Maximum": 95
+    },
+    {
+      "Id": "auto-standby-gb",
+      "PageId": "tbt.memory.cleaner.page",
+      "Kind": "number",
+      "Title": { "Chinese": "待机缓存超过（GB）时自动清理", "English": "Clean when standby cache exceeds (GB)" },
+      "Description": { "Chinese": "0 表示关闭。待机缓存涨到阈值时即使在低占用下也会清理低优先级待机。", "English": "0 disables it. When the standby cache reaches this size, low-priority standby is purged even at low load." },
+      "DefaultValue": 4,
+      "Minimum": 0,
+      "Maximum": 64
+    },
+    {
+      "Id": "notify",
+      "PageId": "tbt.memory.cleaner.page",
+      "Kind": "boolean",
+      "Title": { "Chinese": "清理完成后显示通知", "English": "Show a notification after cleaning" },
+      "Description": { "Chinese": "手动清理和自动清理完成后在右下角显示提示。", "English": "Shows a toast after manual and automatic cleaning." },
+      "DefaultValue": true
+    },
+    {
+      "Id": "auto-interval",
+      "PageId": "tbt.memory.cleaner.page",
+      "Kind": "number",
+      "Title": { "Chinese": "最短间隔（秒）", "English": "Minimum interval (s)" },
+      "DefaultValue": 600,
+      "Minimum": 60,
+      "Maximum": 86400
+    }
+  ],
+  "Sensors": [
+    {
+      "Id": "tbt.memory.cleaner.available-mb",
+      "Name": { "Chinese": "可用内存", "English": "Available memory" },
+      "Unit": "MB",
+      "Category": "memory",
+      "ChartMinimum": 0
+    },
+    {
+      "Id": "tbt.memory.cleaner.used-percent",
+      "Name": { "Chinese": "内存占用", "English": "Memory usage" },
+      "Unit": "%",
+      "Category": "memory",
+      "ChartMinimum": 0,
+      "ChartMaximum": 100
+    },
+    {
+      "Id": "tbt.memory.cleaner.standby-mb",
+      "Name": { "Chinese": "待机缓存", "English": "Standby cache" },
+      "Unit": "MB",
+      "Category": "memory",
+      "ChartMinimum": 0
+    }
+  ],
+  "OverviewItems": [
+    {
+      "Id": "tbt.memory.cleaner.summary",
+      "CardId": "memory-storage",
+      "Action": "add",
+      "Order": 90,
+      "Label": { "Chinese": "空闲 / 待机", "English": "Free / standby" }
+    }
+  ]
+}
