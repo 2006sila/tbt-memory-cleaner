@@ -135,6 +135,47 @@ internal static class Program
 
         try
         {
+            // public screenshot: elevated fake cleaner (no "not elevated" banner), cropped later
+            var publicPage = new MemoryCleanerPage(new FakeCleaner());
+            var publicContext = new FakeContext(true, "zh-CN");
+            var publicView = publicPage.CreateView(publicContext);
+            publicPage.Update(publicContext.State);
+            var publicHost = new Border
+            {
+                Child = publicView,
+                Width = 1280,
+                Height = 1005,
+                Background = new SolidColorBrush(Color.FromRgb(0x0A, 0x10, 0x20)),
+            };
+            publicHost.Measure(new Size(1280, 1005));
+            publicHost.Arrange(new Rect(0, 0, 1280, 1005));
+            publicHost.UpdateLayout();
+            var publicBitmap = new RenderTargetBitmap(1280, 1005, 96, 96, PixelFormats.Pbgra32);
+            publicBitmap.Render(publicHost);
+            Save(publicBitmap, Path.Combine(output, "public-main.png"));
+            publicPage.Dispose();
+            Console.WriteLine("public-main: saved");
+
+            var lightPage = new MemoryCleanerPage(new FakeCleaner());
+            var lightContext = new FakeContext(false, "zh-CN");
+            var lightView = lightPage.CreateView(lightContext);
+            lightPage.Update(lightContext.State);
+            var lightHost = new Border
+            {
+                Child = lightView,
+                Width = 1280,
+                Height = 1005,
+                Background = new SolidColorBrush(Color.FromRgb(0xF4, 0xF7, 0xFB)),
+            };
+            lightHost.Measure(new Size(1280, 1005));
+            lightHost.Arrange(new Rect(0, 0, 1280, 1005));
+            lightHost.UpdateLayout();
+            var lightBitmap = new RenderTargetBitmap(1280, 1005, 96, 96, PixelFormats.Pbgra32);
+            lightBitmap.Render(lightHost);
+            Save(lightBitmap, Path.Combine(output, "public-light.png"));
+            lightPage.Dispose();
+            Console.WriteLine("public-light: saved");
+
             var page = new MemoryCleanerPage(new FakeCleaner());
             var context = new FakeContext(true, "zh-CN");
             var view = page.CreateView(context);
